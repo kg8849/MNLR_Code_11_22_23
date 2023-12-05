@@ -1,1 +1,23 @@
+Expedited Internet Bypass Protocol (EIBP) was developed to replace the current Internet Protocol and its routing protocols in routers in an Autonomous System (AS). 
+EIBP establishes routes taking into consideration the structure of AS networks. 
+The Core routers are identified as tier 1 routers, distribution routers are identified as tier 2 routers and access routers are identified as tier 3 routers. 
+Core routers are assigned identifier that captures their tier value followed by a unique identifier such as 1.x, where x is unique integer assigned to the router.
+When EIBP is invoked in the routers, the core routers advertise their tier addresses, and the distribution routers get a tier address which is 2.x.y, 
+where y is the interface of the core router to which the distribution router is connected. In a similar manner, access routers receive tier addresses. 
+Distribution and access router will receive multiple tier addresses based on their connections to an upper tier router. 
+This auto address assignment sets up the routes, as the tier addresses carry the information required to route.
+End hosts connected to the access routers remain as IP enabled devices and do not run EIBP. 
+Access routers connecting the end hosts/networks learn their IP address of the networks they connect. 
+Access routers record a table of their tier addresses mapped to the IP networks. This information is conveyed to the core routers. 
+Core routers thus have knowledge of the tier addresses of access routers to reach the end IP hosts or networks.
+When an IP packet arrives at an access router destined to another IP host /network, 
+the access router queries the core router for the tier addresses of the access router connecting the destination IP host/network.
+The access router encapsulates the incoming IP packet in an EIBP header that has the source access router tier address and destination access router tier address 
+and performs a comparison of the tier addresses to forward the encapsulated IP packet to the router closest to the destination access router, 
+till it reaches the destination access router. The destination access router, de-encapsulates the IP packet and delivers to the destination IP host/network.
 
+EIBP requires minimal configuration. 
+The hello and dead timers to speed up failure recovery can be set to a low value. 
+Every EIBP message serves as a keep-alive message. 
+The control overhead generated is very low.
+The code is deployed in the Fabric testbed and compared with OSPF running in identical topologies.
