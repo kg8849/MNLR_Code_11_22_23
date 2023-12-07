@@ -2700,6 +2700,9 @@ void msg_typ_labl_add(char buffer[2048], unsigned char* ethhead, char recvOnEthe
 /*   */
 void msg_typ_labl_delt(char buffer[2048], unsigned char* ethhead, char recvOnEtherPort[5], struct sockaddr_ll src_addr) {
 	printf("\n Received MESSAGE_TYPE_MY_LABELS_DELETE on : %s \n", recvOnEtherPort);
+	gettimeofday(&convergence_time, NULL);
+	conv_time = ((double)convergence_time.tv_sec * 1000000 + (double)convergence_time.tv_usec) / 1000000;
+	printf("\nDELETE MESSAGE RECEIVED: CURRENT_TIME:%lf\n", conv_time); 
 	MPLRMsgVReceivedCount++;
 	MPLROtherReceivedCount--;
 	//timestamp();
@@ -2980,6 +2983,9 @@ void msg_typ_ip_res(char buffer[2048], unsigned char* ethhead, char recvOnEtherP
 /*    */
 void msg_typ_labl_lst(char buffer[2048], unsigned char* ethhead, char recvOnEtherPort[5], struct sockaddr_ll src_addr) {
 	printf("\n Received MESSAGE_TYPE_LABELS_LOST on : %s \n", recvOnEtherPort);
+	gettimeofday(&convergence_time, NULL);
+	conv_time = ((double)convergence_time.tv_sec * 1000000 + (double)convergence_time.tv_usec) / 1000000;
+	printf("\nDELETE MESSAGE RECEIVED -LABELS LOST: CURRENT_TIME:%lf\n", conv_time); 
 	MPLRMsgVReceivedCount++;
 	MPLROtherReceivedCount--;
 	// timestamp();
@@ -3039,6 +3045,9 @@ void msg_typ_labl_lst(char buffer[2048], unsigned char* ethhead, char recvOnEthe
 /*  */
 void msg_typ_ip_delt(char buffer[2048], unsigned char* ethhead, char recvOnEtherPort[5], struct sockaddr_ll src_addr) {
 	printf("\n Received MESSAGE_TYPE_PUBLISH_IP_DELETE on : %s \n", recvOnEtherPort);
+	gettimeofday(&convergence_time, NULL);
+	conv_time = ((double)convergence_time.tv_sec * 1000000 + (double)convergence_time.tv_usec) / 1000000;
+	printf("\nDELETE MESSAGE RECEIVED: CURRENT_TIME:%lf\n", conv_time); 
 	MPLRMsgVReceivedCount++;
 	MPLROtherReceivedCount--;
 	// timestamp();
