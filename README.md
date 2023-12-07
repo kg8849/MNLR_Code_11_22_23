@@ -16,4 +16,7 @@ Commented enableLogFiles and fptr. - everything was working ok
 Commented getTS() - tested everything was okay. We were not using this function anywhere.
 
 12-07-2023
-
+Added print current time statements for 
+1. Received MESSAGE_TYPE_LABELS_LOST on
+2. Received MESSAGE_TYPE_MY_LABELS_DELETE on
+3. Received MESSAGE_TYPE_PUBLISH_IP_DELETE on
