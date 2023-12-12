@@ -29,6 +29,20 @@
 #include "baseConversion.h"
 #include "endNetworkUtils.h"
 
+// warnings.... - kriti
+void responseIPresolve(char tieraddr[],struct in_addr ip_addr,char DestTierLabel[],uint8_t entries,int isnew);
+void printAddresstoResponse();
+void findIPforLabel(char label[],char ip[]);
+int searchIPinMyMap(char ip[]);
+void sendNullJoin(char to_port[]);
+void publishIPLabelMap(char label[],int action);
+void checkEntriesToSync();
+int buildIPPublishPacket(uint8_t *data, char addr[]);
+int getParentName(char* curParent,char* currentTier);
+void requestIPresolve(char destinationInterfaceIPAddr[], char Mytier[]);
+int buildIPResolvePacket(uint8_t *data, char destTier[],int tierValue);
+char *getParent(char *str, char ch);
+
 extern int ctrlSend(char eth[], char pay[]);
 extern int ctrlLabelSend(int, char eth[], char pay[]);
 extern int dataSend(char etherPort[], unsigned char ipPacket[], char destTier[],
@@ -1202,7 +1216,7 @@ void checkEntriesToUpdate() {
 }
 
 //Send NULL Join Request //called in helloList.h
-void sendNullJoin(int to_port[20]) {
+void sendNullJoin(char to_port[20]) {
 	char labelAssignmentPayLoad[200];
 	setInterfaces();
 	int cplength = 0;
