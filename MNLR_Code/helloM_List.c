@@ -846,76 +846,94 @@ int _get_MACTest(struct addr_tuple* myAddr) {
 * @return status (int) - method return value
 */
 int setInterfaces() {
-	if (isEnvSet() != 0)
-		setControlIF();
-	struct ifaddrs* ifaddr, * ifa;
-	int family;
-	int countInterface = 0;
-	char temp[20];
+    if (isEnvSet() != 0)
+        setControlIF();
+    struct ifaddrs* ifaddr, * ifa;
+    int family;
+    int countInterface = 0;
+    char temp[20];
 
-	if (getifaddrs(&ifaddr) == -1) { /*The getifaddrs() function creates a linked list of structures
-	describing the network interfaces of the local system, and stores the address of the first item of the list in *ifap.*/
-		errorCount++;
-		perror("ERROR: getifaddrs");
-		exit(EXIT_FAILURE);
-	}
 
-	int init = 0;
-	for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
-		if (ifa->ifa_addr == NULL)
-			continue;
+    if (getifaddrs(&ifaddr) == -1) { /*The getifaddrs() function creates a linked list of structures
+    describing the network interfaces of the local system, and stores the address of the first item of the list in *ifap.*/
+        errorCount++;
+        perror("ERROR: getifaddrs");
+        exit(EXIT_FAILURE);
+    }
 
-		family = ifa->ifa_addr->sa_family;
 
-		if (family == AF_PACKET) {
-			strcpy(temp, ifa->ifa_name);
-			// testing whether interface is up or not
-			if ((ifa->ifa_flags & IFF_UP) == 0) {
-				//if interface is down
-				if (down_flag == 0) {
-					gettimeofday(&down_time, NULL);
-					d_time = ((double)down_time.tv_sec * 1000000 + (double)down_time.tv_usec) / 1000000;
-					printf("\nIF_DIRECT_DOWN:%lf\n", d_time);
-					down_flag = 1;
-				}
-			}
+    int init = 0;
+    for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr == NULL)
+            continue;
 
-			else {
-				if ((ifa->ifa_flags & IFF_LOOPBACK) == 0) {
-					if (ctrlIFName != NULL) {
-						if (strlen(temp) == strlen(ctrlIFName)) {
-							if ((strncmp(temp, ctrlIFName, strlen(ctrlIFName))
-								!= 0)) {
-								countInterface = countInterface + 1;
-								interfaceList[init] = malloc(1 + strlen(temp));
-								strcpy(interfaceList[init], temp);
-								init = init + 1;
-							}
-						}
-						else {
-							countInterface = countInterface + 1;
-							interfaceList[init] = malloc(1 + strlen(temp));
-							strcpy(interfaceList[init], temp);
-							init = init + 1;
-						}
-					}
-					else {
-						countInterface = countInterface + 1;
-						interfaceList[init] = malloc(1 + strlen(temp));
-						strcpy(interfaceList[init], temp);
-						init = init + 1;
-					}
-				}
-			}
 
-		}
-	}
+        family = ifa->ifa_addr->sa_family;
 
-	interfaceListSize = countInterface;
 
-	freeifaddrs(ifaddr);
-	return 0;
+        if (family == AF_PACKET) {
+            strcpy(temp, ifa->ifa_name);// interface name
+            //printf("Interface: %s, Flags: %d\n", ifa->ifa_name, ifa->ifa_flags); // Print interface name and flags
+
+
+            // Ignore the "meas" and "docker0" interfaces
+            if (strcmp(temp, "meas") == 0 || strcmp(temp, "docker0") == 0) {
+                continue; // Skip processing these interfaces
+            }
+
+
+            // testing whether interface is up or not
+            if ((ifa->ifa_flags & IFF_UP) == 0) {
+                //if interface is down
+                if (down_flag == 0) {
+                    gettimeofday(&down_time, NULL);
+                    d_time = ((double)down_time.tv_sec * 1000000 + (double)down_time.tv_usec) / 1000000;
+                    printf("\nIF_DIRECT_DOWN:%lf\n", d_time);
+                    down_flag = 1;
+                }
+            }
+
+
+            else {
+                if ((ifa->ifa_flags & IFF_LOOPBACK) == 0) {
+                    if (ctrlIFName != NULL) {
+                        if (strlen(temp) == strlen(ctrlIFName)) {
+                            if ((strncmp(temp, ctrlIFName, strlen(ctrlIFName))
+                                != 0)) {
+                                countInterface = countInterface + 1;
+                                interfaceList[init] = malloc(1 + strlen(temp));
+                                strcpy(interfaceList[init], temp);
+                                init = init + 1;
+                            }
+                        }
+                        else {
+                            countInterface = countInterface + 1;
+                            interfaceList[init] = malloc(1 + strlen(temp));
+                            strcpy(interfaceList[init], temp);
+                            init = init + 1;
+                        }
+                    }
+                    else {
+                        countInterface = countInterface + 1;
+                        interfaceList[init] = malloc(1 + strlen(temp));
+                        strcpy(interfaceList[init], temp);
+                        init = init + 1;
+                    }
+                }
+            }
+
+
+        }
+    }
+
+
+    interfaceListSize = countInterface;
+
+
+    freeifaddrs(ifaddr);
+    return 0;
 }
+
 
 /**
 * freeInterfaces()- method to free interfaceList
