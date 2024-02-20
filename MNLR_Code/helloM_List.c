@@ -513,12 +513,22 @@ int _get_MACTest(struct addr_tuple* myAddr) {
 			if_indextoname(tcIP, recvOnEtherPortIP); //if_indextoname() function returns the name of the network interface corresponding to the interface index ifindex
 
 			// Fix for testbed, Ignoring messages from control interface
+			// Interface names
 			char* ctrlInterface = "eth0";
 			char* loopbackInterface = "lo";
-			// lo and skip if packets arrive on lo
-			if (strcmp(recvOnEtherPortIP, ctrlInterface) == 0 || strcmp(recvOnEtherPortIP, loopbackInterface) == 0) { //eth0 is the control interface. and Lo is the loop back interface. We do not need process any messages on eth0
-				continue;
+			char* measInterface = "meas";
+			char* dockerInterface = "docker0";
+
+			// Check if the received message is from any of the specified interfaces
+			if (strcmp(recvOnEtherPortIP, ctrlInterface) == 0 ||
+				strcmp(recvOnEtherPortIP, loopbackInterface) == 0 ||
+				strcmp(recvOnEtherPortIP, measInterface) == 0 ||
+				strcmp(recvOnEtherPortIP, dockerInterface) == 0) {
+				// Ignore messages from these interfaces
+				printf("Ignoring message from interface: %s\n", recvOnEtherPortIP);
+				continue; // Skip further processing for this message
 			}
+        
 
 
 			/*
@@ -627,10 +637,11 @@ int _get_MACTest(struct addr_tuple* myAddr) {
 				}
 				}  */
 		     //	else {
+				
 				ipReceivedCount++;
 
 				if (enableLogScreen) {
-					printf("\n The control interface is %s", ctrlInterface); 
+				//	printf("\n The control interface is %s", ctrlInterface); 
 					printf("\n TEST: IP Packet Received \n");
 					printf("\n");
 					printf("\n On port %s\n", recvOnEtherPortIP);
