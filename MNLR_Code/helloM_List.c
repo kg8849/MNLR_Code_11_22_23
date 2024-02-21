@@ -523,12 +523,9 @@ int _get_MACTest(struct addr_tuple* myAddr) {
 			if (strcmp(recvOnEtherPortIP, ctrlInterface) == 0 ||
 				strcmp(recvOnEtherPortIP, loopbackInterface) == 0 ||
 				strcmp(recvOnEtherPortIP, measInterface) == 0 ||
-				strcmp(recvOnEtherPortIP, dockerInterface) == 0) {
+				strcmp(recvOnEtherPortIP, dockerInterface) == 0)
 				// Ignore messages from these interfaces
-				printf("Ignoring message from interface: %s\n", recvOnEtherPortIP);
 				continue; // Skip further processing for this message
-			}
-        
 
 
 			/*

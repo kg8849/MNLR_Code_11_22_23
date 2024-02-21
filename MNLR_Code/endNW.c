@@ -662,7 +662,7 @@ char* updateEndTierAddr(char destinationInterfaceIPAddr[],char Mytier[]) {
 		temp.s_addr = htonl(temp.s_addr); //The htonl() function converts the unsigned integer hostlong from host byte order to network byte order.
 		if (temp.s_addr == current->ip_addr.s_addr) {
 
-			printf("Found tier :  %s \n", current->tier_addr);
+			printf("Found destination tier label :  %s \n", current->tier_addr);
 			found = 1;
 			//Called this function in msg12 to avoid calling it when I have the label --02/11/2022
 			//responseIPresolve(current->tier_addr,current->ip_addr);
