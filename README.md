@@ -14,3 +14,9 @@ On 12_1-23 started working on
 MNLR_CODE_11_30_2023
 Commented enableLogFiles and fptr. - everything was working ok
 Commented getTS() - tested everything was okay. We were not using this function anywhere.
+
+NS_MNLR_Code
+remove some comments and unused function.
+
+02-15-2024
+Added c code to block meas and docker interface. 
