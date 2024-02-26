@@ -10,7 +10,7 @@ Made changes in send_MNLRAutoLabelCtrlMessages.c - uncommented lines 55 and 56
 Added print statement to print length of frame. Line 170
 Tested everything was working.
 
-12-12-23-: 
+12-12-23-
 Commented enableLogFiles and fptr. - everything was working ok
 Commented getTS() - tested everything was okay. We were not using this function anywhere.
 
